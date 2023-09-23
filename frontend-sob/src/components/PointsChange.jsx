@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import './PointsChange.css';
 
+//function takes in an array of point displays and a function to do on the animation's end.
 const PointsChange = ({ pointChanges, onAnimationEnd }) => {
   return (
     <div className="points-change-container">

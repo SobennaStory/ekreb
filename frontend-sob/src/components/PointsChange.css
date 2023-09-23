@@ -49,20 +49,20 @@
     }
   }
   
-  /* Pixel trail effect */
+
   .gain::before,
   .loss::before {
     content: '';
     position: absolute;
     width: 8px;
     height: 8px;
-    background-color: rgba(0, 128, 0, 0.7); /* Green for gain, adjust as needed */
+    background-color: rgba(0, 128, 0, 0.7); 
     animation: pixelTrail 1s ease forwards;
     opacity: 0.7;
   }
   
   .loss::before {
-    background-color: rgba(255, 0, 0, 0.7); /* Red for loss, adjust as needed */
+    background-color: rgba(255, 0, 0, 0.7); 
   }
   
   @keyframes pixelTrail {

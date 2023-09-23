@@ -1,5 +1,6 @@
 import { tsParticles } from "tsparticles";
 
+//Loading and playing a confetti burst
 export const triggerConfetti = () => {
     tsParticles.load("confetti", {
         particles: {
@@ -30,10 +31,10 @@ export const triggerConfetti = () => {
             move: {
                 enable: true,
                 speed: 20,
-                direction: "top", // This will make the confetti burst upwards
+                direction: "top", 
                 random: true,
                 straight: false,
-                out_mode: "destroy", // The particles will disappear after reaching the canvas edge (bottom in this case)
+                out_mode: "destroy", 
                 bounce: false,
                 gravity: {
                     enable: true, // Enabling gravity to pull the confetti back down

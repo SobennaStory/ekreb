@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { tsParticles } from 'tsparticles';
 
+//Loading and playing a star-like effect
 function Background() {
     useEffect(() => {
         tsParticles.load("tsparticles", {
@@ -43,12 +44,12 @@ function Background() {
                     }
                 },
                 rotate: {
-                    value: 0, // Starting rotation
-                    random: true, // Random starting rotation
-                    direction: "clockwise", // Can be "clockwise", "counter-clockwise", or "random"
+                    value: 0, 
+                    random: true,
+                    direction: "random", 
                     animation: {
                         enable: true,
-                        speed: 3, // Speed of rotation, you can adjust or make it random
+                        speed: "random", 
                         sync: false
                     }
                 }

@@ -5,28 +5,27 @@ import { FrownOutlined, SmileTwoTone, QuestionCircleOutlined} from '@ant-design/
 import PointsChange from './PointsChange';
 import { triggerConfetti } from './Confetti';
 
-//For a later Sobenna to finish --- 
-// Maybe make an array that cycles tooltips after succeful guesses.
-// Particles maybe
-
+//Randomizing Function
 const getRandomNumber = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
 function Game () {
 
+    //Variables
     const [changedWord, setChangedWord] = useState("");
     const [word, setWord] = useState("hello");
     const [guess, setGuess] = useState("");
     const [showHint, setShowHint] = useState(false);
     const [score, setScore] = useState(0);  
     const [pointChanges, setPointChanges] = useState([]);
-    const [timeLeft, setTimeLeft] = useState(60); // Initialize with whatever starting time you want (e.g., 60 seconds)
+    const [timeLeft, setTimeLeft] = useState(60); 
     const [isActive, setIsActive] = useState(true); // Use this to control if the timer should be running
 
 
     const guessTime = 60;
 
+    //Tooltips
     var tooltips = ["...Don't tell the dev I told you this, but when you guess wrong the answer is in the terminal",
                     "Well done!", 
                     "You're so smart.", 
@@ -63,6 +62,7 @@ function Game () {
         return scrambledWord;
     }
 
+    //Skip word. For the weak.
     const skipWord = () => {
       notification.info({
         message: "Succesfully skipped.",
@@ -77,10 +77,11 @@ function Game () {
       setGuess("");            // Clear the guess
       setIsActive(true);       // Restart the timer
       setTimeLeft(guessTime);  // Reset the timer back to its initial value
-      incrementScore(-5);     // Deduct a small penalty for skipping (optional, adjust as needed)
+      incrementScore(-5);    
 
     };
 
+    //Reset game. For the bad.
     const resetGame = () => {
       getNewWord();               // Get a new word
       setShowHint(false);         // Hide the hint
@@ -88,9 +89,10 @@ function Game () {
       setIsActive(true);          // Restart the timer
       setTimeLeft(guessTime);     // Reset the timer back to its initial value
       setPointChanges([]);        // Clear any point changes animations
-      resetScore();                 // Get the current score (you can also reset the score here if you want)
+      resetScore();                
     };
 
+    //Grabs the current score
     const getScore = () => {
         axios
           .get('http://localhost:3000/score')
@@ -102,6 +104,7 @@ function Game () {
           });
     };
 
+    //Resets the score to 0
     const resetScore = () => {
       axios
         .patch('http://localhost:3000/resetscore')
@@ -113,6 +116,7 @@ function Game () {
         });
   };
 
+    //Add a pointchange object to the array
     const addPointChange = (value, count) => {
         const changes = Array.from({ length: count }, () => ({
           value,
@@ -135,6 +139,7 @@ function Game () {
         );
       };
 
+    //Increment the score by calling backend
     const incrementScore = (value) => {
         axios
           .patch(`http://localhost:3000/score?val=${value}`)
@@ -149,6 +154,7 @@ function Game () {
           });
     };
 
+    //If definition exists, it is the hint. If not, the word partially masked is the hint.
     const handleHint = () => {
         incrementScore(-30);
         let config = {
@@ -168,13 +174,13 @@ function Game () {
             placement: "bottomLeft",
             duration: 0, // Set duration to 0 to keep the notification open
             icon: <QuestionCircleOutlined />,
-            onClose: () => notification.destroy('hint'), // Close the notification when needed
-            key: 'hint', // Unique key to identify this notification
+            onClose: () => notification.destroy('hint'), 
+            key: 'hint', 
             btn: (
                 <Button
                     type="primary"
                     size="small"
-                    onClick={() => notification.destroy('hint')} // Close the notification on button click
+                    onClick={() => notification.destroy('hint')} 
                 >
                     Close
                 </Button>
@@ -186,6 +192,8 @@ function Game () {
         });
 
     } 
+
+    //On submit, if kagura bachi is passed, instant win. If guess is correct get points. If not, lose points.
     const handleSubmit = () => {
         let config = {
             method: 'patch',
@@ -235,6 +243,7 @@ function Game () {
         });
     }
 
+    //Gets a new word.
     const getNewWord = () => {
         let config = {
           method: 'get',
@@ -268,32 +277,34 @@ function Game () {
           icon: <FrownOutlined/>
         });
 
-        incrementScore(-20); // Deduct points when time runs out (change value to your liking)
+        incrementScore(-20); // Deduct points when time runs out 
         getNewWord();
         setIsActive(false);
       }
       
-      return () => clearTimeout(timer); // Clear the timeout to prevent potential memory leaks
+      return () => clearTimeout(timer); 
     }, [timeLeft, isActive]);
     
+    //Effect functions
+
     // Update the timer's active status and reset the timer whenever a new word is fetched
     useEffect(() => {
       setIsActive(true);
       setTimeLeft(guessTime); // Reset to initial value
     }, [word]);
       
-      // ... Rest of your component logic ...
     useEffect(() => {
-        // Fetch a random word when the component mounts (you can modify this behavior as needed)
+        // Grab word at beggining
         getNewWord();
         getScore();
       }, []);
       
     useEffect(() => {
-        // Update the displayed scrambled word when the word changes
+        // Scrambles words
         setChangedWord(ekreb(word));
     }, [word]);
 
+    //Celebration. Triggers when score changes.
     useEffect(() => {
       if (score >= 1000) {
           triggerConfetti();
@@ -301,7 +312,7 @@ function Game () {
           notification.open({
             message: "Congratulations!",
             description: "You reached 1000 points! 🎉",
-            className: "rainbowNotification",  // custom class for the animated background
+            className: "rainbowNotification",  
             duration: 5,
         });
 
@@ -309,6 +320,7 @@ function Game () {
     }, [score]);
 
 
+    //Html
     return <div className="card">  
         <h2> Bet you can't guess this. Your word is {changedWord} </h2> 
         <div id="confetti" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0 }}></div>
