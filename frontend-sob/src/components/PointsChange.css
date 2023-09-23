@@ -1,0 +1,77 @@
+@font-face {
+    font-family: 'PixelFont7';
+    src: url('pixel font-7.ttf') format('truetype'); 
+    font-weight: normal;
+    font-style: normal;
+}
+.points-change {
+    font-family: 'PixelFont7'; 
+    font-size: 1.5rem;
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 1;
+    z-index: 999;
+  }
+  
+  .gain {
+    color: green;
+    animation: slideUp 0.5s ease forwards, fallDown 0.5s ease 1.5s forwards;
+  }
+  
+  .loss {
+    color: red;
+    animation: slideUp 0.5s ease forwards, fallDown 0.5s ease 1.5s forwards;
+  }
+  
+  @keyframes slideUp {
+    0% {
+      bottom: -40px;
+    }
+    100% {
+      bottom: 10px;
+    }
+  }
+  
+  @keyframes fallDown {
+    0% {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(-50%) translateY(60px);
+      opacity: 0;
+    }
+  }
+  
+  /* Pixel trail effect */
+  .gain::before,
+  .loss::before {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: rgba(0, 128, 0, 0.7); /* Green for gain, adjust as needed */
+    animation: pixelTrail 1s ease forwards;
+    opacity: 0.7;
+  }
+  
+  .loss::before {
+    background-color: rgba(255, 0, 0, 0.7); /* Red for loss, adjust as needed */
+  }
+  
+  @keyframes pixelTrail {
+    0% {
+      transform: translateX(0) translateY(0);
+      opacity: 0.7;
+    }
+    100% {
+      transform: translateX(-40px) translateY(40px);
+      opacity: 0;
+    }
+  }
