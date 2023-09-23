@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@ant-design/icons": "^4.0.0",
+    "cors": "^2.8.5",
+    "react-confetti": "^6.1.0",
+    "react-tsparticles": "^2.12.2",
+    "tsparticles-preset-stars": "^2.12.0"
+  }
+}
